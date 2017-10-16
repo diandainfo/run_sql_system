@@ -1,0 +1,34 @@
+
+# webstorm
+.idea
+
+# svn
+.svn
+
+# .bak
+*.bak
+
+# node modules
+node_modules/
+npm-debug.log
+npm-lock.log
+
+# sql
+
+# logs
+logs/
+
+# config
+config/config_test.js
+config/config_experience.js
+config/config_stage.js
+config/config_production.js
+
+# general css
+public/stylesheets/general/*.css
+public/stylesheets/general/*.css.map
+
+# statis data html file
+public/static/about/*
+public/uploads/banner/*
+public/uploads/production/*

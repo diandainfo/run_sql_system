@@ -1,0 +1,21 @@
+{
+  "name": "run_sql_system",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./app.js"
+  },
+  "babel": {
+    "presets": [
+      "latest"
+    ]
+  },
+  "script": "./app.js",
+  "dependencies": {
+    "express": "^4.16.2",
+    "express-session": "^1.15.6"
+  },
+  "devDependencies": {
+    "webpack": "^3.7.1"
+  }
+}
