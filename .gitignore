@@ -12,6 +12,7 @@
 node_modules/
 npm-debug.log
 npm-lock.log
+package-lock.json
 
 # sql
 
