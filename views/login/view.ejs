@@ -2,7 +2,31 @@
 <% include ../_base/css.ejs %>
 <% include ../_base/container.ejs %>
 <% include ../_base/header.ejs %>
-<div class="app-container">
+<div class="app-container container">
+    <div class="container-header container">
+        <h2><%= title %></h2>
+    </div>
+    <div class="container-content col-lg-12 mt-40">
+        <form class="form-horizontal" id="login_form" action="/login" method="post">
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="login_name">用户名</label>
+                <div class="col-lg-4">
+                    <input class="form-control" type="text" id="login_name" name="loginName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="pwd">密码</label>
+                <div class="col-lg-4">
+                    <input class="form-control" type="password" id="pwd" name="pwd">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-offset-2 col-lg-10">
+                    <button class="form-submit btn btn-primary" type="submit" id="login_submit">登录</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 <% include ../_base/javascript.ejs %>
 <% include ../_base/foot.ejs %>
