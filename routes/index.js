@@ -12,7 +12,6 @@ const express = require('express')
 
 // 请求日志
 router.use((req, res, next)=> {
-    console.info(req.sessionID, !!req.session);
     GLO.http(req);
     next();
 });
@@ -22,6 +21,12 @@ router.use(log4js.connectLogger(log4js.getLogger('http'), {
     level: 'INFO'
     , format: ':remote-addr  :method  :url  :status  :response-time' + 'ms'
 }));
+
+// api接口
+router.use('/api', require('./api'));
+
+// web页面
+router.use('/', require('./web'));
 
 // 系统错误 - 返回
 router.use((err, req, res, next) => {
