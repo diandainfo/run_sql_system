@@ -11,18 +11,12 @@ const path = require('path');
 module.exports = {
     host: ''
     , port: 3000
-    , mysql: {// 读写分离
-        read: { // 读库
+    , mysql: { // 多库读写
+        run_sql_system: {
             database: 'run_sql_system'
             , host: '127.0.0.1'
-            , username: 'root' // 账号
+            , user: 'root' // 账号
             , password: 'root' // 密码
-            , dialect: 'mysql'
-        }, write: { // 写库
-            database: 'run_sql_system'
-            , host: '127.0.0.1'
-            , username: 'root'
-            , password: 'root'
             , dialect: 'mysql'
         }
     }, redis: {
@@ -33,6 +27,9 @@ module.exports = {
         , secret: 'run_sql_system'
         , key: 'run_sql_system'
     }, user: { // 登录账号
-        admin: 123456
+        admin: {
+            password: '00431fd54c73507e66e75f059eb6210a'
+            , name: '管理员'
+        }
     }
 };

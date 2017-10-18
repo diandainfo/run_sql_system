@@ -10,7 +10,7 @@ const express = require('express')
     , router = new express.Router();
 
 // 所有接口需登录才能访问
-router.use(require('../../service/login').auth);
+router.use((req, res, next)=>require('../../service/login').auth(req, res) ? next() : res.redirect('/login'));
 
 // 
 

@@ -31,6 +31,9 @@ module.exports = {
     // MD5
     , md5: _.md5
 
+    // 密码生成规则
+    , pwd: str=>GLO.md5(GLO.md5(str) + GLO.SYS_NAME)
+
     // filename生成
     , filename: str => _.md5(str + new Date().getTime())
 };

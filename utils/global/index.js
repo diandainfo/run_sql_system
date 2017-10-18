@@ -40,4 +40,4 @@ const packageConfig = require('../../package.json')
     }
 };
 
-module.exports = Object.assign(_, require('./logger'));
+module.exports = Object.assign(_, require('./logger'), require('./method'));

@@ -34,9 +34,11 @@ router.use((err, req, res, next) => {
     res.status(err.status || 500);
     if (err.status !== 404) {
         GLO.logger('router').error(err);
-        return res.json(GLO.error(err, -99, '系统错误'));
+        req.flash('ems', '系统错误');
+        return res.redirect('/?e=1');
     } else {
-        return res.json(GLO.error(err, 404, '未找到请求地址'));
+        req.flash('ems', '未找到请求地址');
+        return res.redirect('/?e=1');
     }
 });
 

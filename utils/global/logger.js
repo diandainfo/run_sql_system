@@ -33,7 +33,7 @@ module.exports = {
      * @returns {string}
      */
     , http: req=> {
-        const ip = require('./method').ip(req)
+        const ip = GLO.ip(req)
             , _ = ip
                 + '  ' + req.originalUrl
                 + '  ' + req.method

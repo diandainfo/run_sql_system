@@ -17,6 +17,7 @@ const express = require('express')
     , path = require('path')
     , serveFavicon = require('serve-favicon')
     , config = require('./config')
+    , flash = require('express-flash') // 闪存模块
     ;
 
 require('events').EventEmitter.defaultMaxListeners = 0;
@@ -27,8 +28,8 @@ app.set('view cache', !GLO.isDev()); // 设置模板缓存
 app.use(serveFavicon(path.join(__dirname, '/public/favicon.ico'))); // 设置浏览器图标
 app.use(bodyParser.json({limit: '50mb'})); // 设置body结构体最大值
 app.use(bodyParser.urlencoded({extended: true})); // 设置body结构体键值数据类型
-// app.use(cookieParser()); // 加载cookie解析中间件
 app.use(express.static(path.join(__dirname, 'public'))); // 设置静态资源解析地址
+app.use(flash());
 // 配置session
 app.use(session({
     store: new RedisStore(config.redis)

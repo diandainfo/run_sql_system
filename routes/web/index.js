@@ -13,7 +13,7 @@ const express = require('express')
 router.use('/login', require('./login'));
 
 // 拦截所有页面到登录校验
-router.use(require('../../service/login').auth);
+router.use((req, res, next)=>require('../../service/login').auth(req, res) ? next() : res.redirect('/login'));
 
 // 首页 - 中转到home页
 router.get('/', (req, res)=>res.redirect('/home'));
