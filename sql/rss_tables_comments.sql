@@ -29,7 +29,7 @@ CREATE TABLE `rss_tables_comments` (
   `rtc_length` int(5) DEFAULT NULL COMMENT '字段长度',
   `rtc_is_index` tinyint(4) DEFAULT NULL COMMENT '是否为索引字段',
   PRIMARY KEY (`rtc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据库中表结构的额外注释信息\r\n';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据库中表结构的额外注释信息';
 
 -- ----------------------------
 -- Records of rss_tables_comments
