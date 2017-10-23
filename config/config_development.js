@@ -15,8 +15,14 @@ module.exports = {
         run_sql_system: {
             database: 'run_sql_system'
             , host: '127.0.0.1'
-            , user: 'root' // 账号
-            , password: 'root' // 密码
+            , user: 'root'
+            , password: 'root'
+            , dialect: 'mysql'
+        }, rss_test: {
+            database: 'rss_test'
+            , host: '127.0.0.1'
+            , user: 'root'
+            , password: 'root'
             , dialect: 'mysql'
         }
     }, redis: {

@@ -21,6 +21,9 @@ router.get('/', (req, res)=>res.redirect('/home'));
 // 任务
 router.use('/job', require('./job'));
 
+// 定时任务
+router.use('/schedule', require('./schedule'));
+
 // home页
 router.get('/home', (req, res)=>
     res.render('./home/view', {

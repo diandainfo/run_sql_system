@@ -12,6 +12,7 @@ const packageConfig = require('../../package.json')
     , SYS_NAME: packageConfig.name // 项目名称
     , SYS_VERSION: packageConfig.version // 项目版本
     , general: {} // 全局内存存储变量
+    , schedule_jobs: [] // 定时任务
     , isDev: ()=>GLO.ENV === 'development' // 是否为开发环境
     , isPro: ()=>GLO.ENV === 'production' // 是否为生产环境
     , success: (data, count)=> { // 成功的返回
