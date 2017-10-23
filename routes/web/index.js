@@ -18,6 +18,9 @@ router.use((req, res, next)=>require('../../service/login').auth(req, res) ? nex
 // 首页 - 中转到home页
 router.get('/', (req, res)=>res.redirect('/home'));
 
+// 任务
+router.use('/job', require('./job'));
+
 // home页
 router.get('/home', (req, res)=>
     res.render('./home/view', {
