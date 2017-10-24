@@ -17,6 +17,9 @@ package-lock.json
 # logs
 logs/
 
+# download excel
+public/download/*.xls
+
 # config
 config/config_test.js
 config/config_experience.js
