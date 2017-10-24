@@ -9,15 +9,47 @@
     <div class="mt-2e">
         <form class="form-horizontal" method="post" action="/schedule/add">
             <div class="form-group">
+                <label for="sj_db" class="col-sm-2 control-label">定时任务执行SQL的数据库</label>
+                <div class="col-sm-4">
+                    <select class="form-control" name="db" id="sj_db">
+                        <% if (database && database instanceof Array && database.length > 0) {
+                        database.forEach(function(db){ %>
+                        <option value="<%= db %>"><%= db %></option>
+                        <% })} %>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
                 <label for="sj_title" class="col-sm-2 control-label">定时任务名称</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="title" id="sj_title" placeholder="定时任务名称">
+                    <input type="text" class="form-control" name="title" id="sj_title" placeholder="定时任务名称" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="sj_file_name" class="col-sm-2 control-label">定时任务创建文件名</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" name="fName" id="sj_file_name" placeholder="定时任务创建文件名"
+                           required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="sj_email_title" class="col-sm-2 control-label">Email邮件名称</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" name="eTitle" id="sj_email_title" placeholder="Email邮件名称"
+                           required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="sj_email_add" class="col-sm-2 control-label">Email收件人地址</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="eAdd" id="sj_email_add" placeholder="Email收件人地址"
+                           required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="sj_cron" class="col-sm-2 control-label">定时任务调度时间</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" name="cron" id="sj_cron" placeholder="定时任务调度时间">
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" name="cron" id="sj_cron" placeholder="定时任务调度时间" required>
                 </div>
                 <label class="col-sm-4 control-label">
                     * 参见<a href="https://github.com/node-schedule/node-schedule#cron-style-scheduling">
@@ -26,14 +58,15 @@
                 </label>
             </div>
             <div class="form-group">
-                <label for="inputPassword3" class="col-sm-2 control-label">定时任务SQL语句</label>
+                <label for="sj_sql" class="col-sm-2 control-label">定时任务SQL语句</label>
                 <div class="col-sm-10">
-                    <textarea class="form-control" id="inputPassword3" placeholder="Password" rows="10"></textarea>
+                    <textarea class="form-control" id="sj_sql" name="sql"
+                              placeholder="输入需要执行的SQL" rows="10" required></textarea>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default">Sign in</button>
+                    <button type="submit" class="btn btn-primary">新增定时任务</button>
                 </div>
             </div>
         </form>

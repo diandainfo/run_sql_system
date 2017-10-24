@@ -7,6 +7,9 @@
 'use strict';
 
 const mysql = require('mysql')
-    , config = require('../../config');
+    , config = require('../../config').mysql;
 
-module.exports = (database = 'run_sql_system')=>mysql.createConnection(config[database]);
+module.exports = {
+    // 创建并拿到数据库连接
+    createConnection: (database = GLO.SYS_NAME)=>mysql.createConnection(config[database])
+};
