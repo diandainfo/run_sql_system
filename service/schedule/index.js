@@ -65,9 +65,9 @@ const _ = {
 module.exports = {
     // 新增定时任务：将定时任务写入db，并创建定时任务
     add: job=>new Promise((resolve, reject)=> {
-        const sj = new ScheduleJob()
-            , connection = createConnection(job.rsj_database);
+        const sj = new ScheduleJob();
         sj.addSJ(job);
+        const connection = createConnection(sj.rsj_database);
         dao.connection(connection)
             .then(()=>dao.insert(connection, sj)) // 定时任务写入db内
             .then(()=>_.create(connection, sj))
@@ -89,9 +89,9 @@ module.exports = {
 
     // 即时运行定时任务
     , now: job=>new Promise((resolve, reject)=> {
-        const sj = new ScheduleJob()
-            , connection = createConnection(job.rsj_database);
+        const sj = new ScheduleJob();
         sj.addSJ(job);
+        const connection = createConnection(sj.rsj_database);
         dao.connection(connection)
             .then(()=>_.run(connection, sj))
             .then(data=>data ? _.excel(data, sj.rsj_file_name) : data)
