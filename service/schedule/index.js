@@ -7,7 +7,9 @@
 'use strict';
 
 let ScheduleJobList = GLO.schedule_jobs; // 全局定时任务队列
-const ScheduleJob = require('../../medals').ScheduleJob // 定时任务实体
+const xls = require('node-xlsx')
+    , fs = require('fs')
+    , ScheduleJob = require('../../medals').ScheduleJob // 定时任务实体
     , createConnection = require('../../utils/mysql').createConnection
     , dao = require('./dao')
     ;
@@ -16,9 +18,47 @@ const _ = {
     // 创建定时任务：将定时任务注册到运行时
     create: (connection, job)=>new Promise((resolve, reject)=> {
         const schedule = require('node-schedule')
-            , __job = schedule.scheduleJob(_job.rsj_cron, ()=> {
+            , __job = schedule.scheduleJob(job.rsj_cron, ()=> {
             // dao.query(connection,job.rsj_sql)
         });
+    })
+
+    // 处理结果集
+    , setResults: results=> {
+        const keys = Object.keys(results[0]);
+        let data = [];
+        // 将key放在第一行
+        data.push(keys);
+        // 处理行数据：从对象到数组
+        results.forEach(result=> {
+            let row = [];
+            keys.forEach(key=> {
+                row.push(result[key]);
+            });
+            data.push(row);
+        });
+        return data;
+    }
+
+    // 将数据写入到excel中
+    , excel: (data, fileName)=>new Promise((resolve, reject)=> {
+        const buffer = xls.build([{name: '结果', data: data}])
+            , file_path = require('path').join(__dirname, '../../public/download/' + fileName + '.xls');
+        fs.writeFile(file_path, buffer, err=>err ? reject(err) : resolve(true));
+    })
+
+    // 执行定时任务
+    , run: (connection, job)=>new Promise((resolve, reject)=> {
+        dao.query(connection, job.rsj_sql)
+            .then(results=> {
+                if (results && results instanceof Array && results.length > 0) {
+                    let data = _.setResults(results);
+                    resolve(data);
+                } else {
+                    resolve(false);
+                }
+            })
+            .catch(e=>reject(e));
     })
 };
 
@@ -28,9 +68,9 @@ module.exports = {
         const sj = new ScheduleJob()
             , connection = createConnection(job.rsj_database);
         sj.addSJ(job);
-        dao.connection()
-            .then(()=>dao.insert(connection, job)) // 定时任务写入db内
-            .then(()=>_.create(connection, job))
+        dao.connection(connection)
+            .then(()=>dao.insert(connection, sj)) // 定时任务写入db内
+            .then(()=>_.create(connection, sj))
             .then(()=>resolve(true))
             .catch(err=>reject(err));
     })
@@ -49,7 +89,14 @@ module.exports = {
 
     // 即时运行定时任务
     , now: job=>new Promise((resolve, reject)=> {
-
+        const sj = new ScheduleJob()
+            , connection = createConnection(job.rsj_database);
+        sj.addSJ(job);
+        dao.connection(connection)
+            .then(()=>_.run(connection, sj))
+            .then(data=>data ? _.excel(data, sj.rsj_file_name) : data)
+            .then(result=>resolve(result ? '/download/' + sj.rsj_file_name + '.xls' : false))
+            .catch(err=>reject(err));
     })
 
     // 初始化项目运行定时任务

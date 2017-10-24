@@ -17,13 +17,11 @@ module.exports = {
             , host: '127.0.0.1'
             , user: 'root'
             , password: 'root'
-            , dialect: 'mysql'
         }, rss_test: {
             database: 'rss_test'
             , host: '127.0.0.1'
             , user: 'root'
             , password: 'root'
-            , dialect: 'mysql'
         }
     }, redis: {
         host: '192.168.1.101'

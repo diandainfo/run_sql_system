@@ -33,7 +33,8 @@ module.exports = {
     )
 
     // 执行查询
-    , query: connection=>new Promise((resolve, reject)=>
+    , query: (connection, sql)=>new Promise((resolve, reject)=> {
+        GLO.debug(sql, 'SQL');
         connection.query(sql, (error, results)=> {
             if (error) {
                 return reject(error);
@@ -41,6 +42,6 @@ module.exports = {
                 connection.end();
                 return resolve(results);
             }
-        })
-    )
+        });
+    })
 };
