@@ -35,5 +35,15 @@ module.exports = {
             password: '00431fd54c73507e66e75f059eb6210a'
             , name: '管理员'
         }
+    }, email: {
+        host: 'mail.diandainfo.com'
+        , port: 25
+        , secure: false
+        , auth: {
+            user: '123456'
+            , pass: '123456'
+        }, tls: {
+            rejectUnauthorized: false
+        }
     }
 };

@@ -11,6 +11,7 @@ const xls = require('node-xlsx')
     , fs = require('fs')
     , ScheduleJob = require('../../medals').ScheduleJob // 定时任务实体
     , createConnection = require('../../utils/mysql').createConnection
+    , email = require('../../utils/email')
     , dao = require('./dao')
     ;
 
@@ -95,7 +96,21 @@ module.exports = {
         dao.connection(connection)
             .then(()=>_.run(connection, sj))
             .then(data=>data ? _.excel(data, sj.rsj_file_name) : data)
-            .then(result=>resolve(result ? '/download/' + sj.rsj_file_name + '.xls' : false))
+            .then(result=> {
+                if (result) {
+                    return email({
+                        from: '"数据统计" <dss@diandainfo.com>'
+                        , to: sj.rsj_email_address
+                        , subject: sj.rsj_email_title
+                        , text: '数据需求者:\n' +
+                        '您好!\n您需要运行的数据已完成。\n' +
+                        '请查看 <a href="/download/' + sj.rsj_file_name + '.xls">' + sj.rsj_title + '的数据统计结果</a> 。'
+                    });
+                } else {
+                    resolve(false);
+                }
+            })
+            .then(()=>resolve('/download/' + sj.rsj_file_name + '.xls'))
             .catch(err=>reject(err));
     })
 

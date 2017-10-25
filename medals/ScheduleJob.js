@@ -32,7 +32,7 @@ class ScheduleJob {
         this.rsj_email_title = job.eTitle;
         this.rsj_email_address = job.eAdd;
         this.rsj_cron = job.cron;
-        this.rsj_sql = job.sql;
+        this.rsj_sql = require('../utils/mysql/sqlmin')(job.sql); // sql压缩
         return this;
     }
 
