@@ -99,12 +99,11 @@ module.exports = {
             .then(result=> {
                 if (result) {
                     return email({
-                        from: '"数据统计" <dss@diandainfo.com>'
+                        from: '"数据统计" <zhangrz@diandainfo.com>'
                         , to: sj.rsj_email_address
                         , subject: sj.rsj_email_title
-                        , text: '数据需求者:\n' +
-                        '您好!\n您需要运行的数据已完成。\n' +
-                        '请查看 <a href="/download/' + sj.rsj_file_name + '.xls">' + sj.rsj_title + '的数据统计结果</a> 。'
+                        , html: '<h2>数据需求者:</h2><h3>　　您好!<br>　　您需要运行的数据已完成。<br>　　请查看' +
+                        '<a href="/download/' + sj.rsj_file_name + '.xls">' + sj.rsj_title + '的数据统计结果</a>。</h3>'
                     });
                 } else {
                     resolve(false);
