@@ -11,7 +11,9 @@ const path = require('path')
     , BASE_URI = './public/javascript';
 
 module.exports = {
-    entry: {}, output: {
+    entry: {
+        'add.schedule': BASE_URI + '/schedule/add'
+    }, output: {
         path: path.join(__dirname, 'public/src')
         , filename: '[name].min.js'
     }, module: {// 引用的组件
