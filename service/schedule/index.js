@@ -7,8 +7,10 @@
 'use strict';
 
 let ScheduleJobList = GLO.schedule_jobs; // 全局定时任务队列
+
 const xls = require('node-xlsx')
     , fs = require('fs')
+    , config = require('../../config')
     , ScheduleJob = require('../../medals').ScheduleJob // 定时任务实体
     , createConnection = require('../../utils/mysql').createConnection
     , email = require('../../utils/email')
@@ -44,7 +46,7 @@ const _ = {
     // 将数据写入到excel中
     , excel: (data, fileName)=>new Promise((resolve, reject)=> {
         const buffer = xls.build([{name: '结果', data: data}])
-            , file_path = require('path').join(__dirname, '../../public/download/' + fileName + '.xls');
+            , file_path = require('path').join(__dirname, '../../public/download/' + fileName + '.csv');
         fs.writeFile(file_path, buffer, err=>err ? reject(err) : resolve(true));
     })
 
@@ -60,6 +62,15 @@ const _ = {
                 }
             })
             .catch(e=>reject(e));
+    })
+
+    // 发送邮件
+    , email: sj=>email({
+        from: '"RSS_数据运行系统" <' + config.email.auth.user + '@diandainfo.com>'
+        , to: sj.rsj_email_address
+        , subject: sj.rsj_email_title
+        , html: '<h2>数据需求者:</h2><h3>　　您好!<br>　　您需要运行的数据已完成。<br>　　请查看' +
+        '<a href="' + config.uri + '/download/' + sj.rsj_file_name + '.csv">' + sj.rsj_title + '的数据统计结果</a>。</h3>'
     })
 };
 
@@ -96,20 +107,8 @@ module.exports = {
         dao.connection(connection)
             .then(()=>_.run(connection, sj))
             .then(data=>data ? _.excel(data, sj.rsj_file_name) : data)
-            .then(result=> {
-                if (result) {
-                    return email({
-                        from: '"数据统计" <zhangrz@diandainfo.com>'
-                        , to: sj.rsj_email_address
-                        , subject: sj.rsj_email_title
-                        , html: '<h2>数据需求者:</h2><h3>　　您好!<br>　　您需要运行的数据已完成。<br>　　请查看' +
-                        '<a href="/download/' + sj.rsj_file_name + '.xls">' + sj.rsj_title + '的数据统计结果</a>。</h3>'
-                    });
-                } else {
-                    resolve(false);
-                }
-            })
-            .then(()=>resolve('/download/' + sj.rsj_file_name + '.xls'))
+            .then(result=> result ? _.email(sj) : resolve(false))
+            .then(()=>resolve('/download/' + sj.rsj_file_name + '.csv'))
             .catch(err=>reject(err));
     })
 

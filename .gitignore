@@ -18,7 +18,7 @@ package-lock.json
 logs/
 
 # download excel
-public/download/*.xls
+public/download/*.csv
 
 # config
 config/config_test.js

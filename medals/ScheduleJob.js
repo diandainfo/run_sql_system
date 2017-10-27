@@ -28,7 +28,7 @@ class ScheduleJob {
     setSJ(job) {
         this.rsj_database = job.db;
         this.rsj_title = job.title;
-        this.rsj_file_name = job.fName;
+        this.rsj_file_name = job.fName + '_' + new Date().getTime();
         this.rsj_email_title = job.eTitle;
         this.rsj_email_address = job.eAdd;
         this.rsj_cron = job.cron;

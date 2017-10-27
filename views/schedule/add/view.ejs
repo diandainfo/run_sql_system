@@ -7,7 +7,7 @@
         <h2><%= title %></h2>
     </div>
     <div class="mt-2e">
-        <form class="form-horizontal" method="post" action="/schedule/now">
+        <form class="form-horizontal" id="schedule_add_form" method="post">
             <div class="form-group">
                 <label for="sj_db" class="col-sm-2 control-label">定时任务执行SQL的数据库</label>
                 <div class="col-sm-4">
@@ -67,8 +67,8 @@
             <div class="form-group">
                 <div class="col-sm-offset-4 col-sm-8">
                     <button type="submit" class="dp-n" id="form_submit"></button>
-                    <button type="button" class="btn btn-primary">新增定时任务</button>
-                    <button type="submit" class="btn btn-danger ml-2e">立即执行定时任务</button>
+                    <button type="button" class="btn btn-primary" id="schedule_add_submit">新增定时任务</button>
+                    <button type="button" class="btn btn-danger ml-2e" id="schedule_now_submit">立即执行定时任务</button>
                 </div>
             </div>
         </form>

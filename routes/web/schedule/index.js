@@ -32,14 +32,14 @@ router.get('/add', (req, res)=>
 router.post('/add', (req, res)=>
     scheduleJobService.add(req.body)
         .then(()=>res.redirect('/schedule/list'))
-        .catch(err=>res.json(GLO.error(err, -99, '新增定时任务出错')))
+        .catch(err=>res.json(GLO.success(err)))
 );
 
 // 任务 - 即时执行任务 - 接口
 router.post('/now', (req, res)=>
     scheduleJobService.now(req.body)
         .then(uri=>uri ? res.redirect(uri) : res.json(GLO.success(uri)))
-        .catch(err=>res.json(GLO.error(err, -99, '执行定时任务出错')))
+        .catch(err=>res.json(GLO.success(err)))
 );
 
 module.exports = router;

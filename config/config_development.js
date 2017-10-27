@@ -10,6 +10,7 @@ const path = require('path');
 
 module.exports = {
     host: ''
+    , uri: 'http://localhost:3000' // 访问的地址
     , port: 3000
     , mysql: { // 多库读写
         run_sql_system: {

@@ -7,3 +7,14 @@
 'use strict';
 
 // 新增定时任务
+
+$(function () {
+    $('#schedule_add_submit').on('click', ()=> {
+        $('#schedule_add_form').attr('action', '/schedule/add');
+        $('#form_submit').click();
+    });
+    $('#schedule_now_submit').on('click', ()=> {
+        $('#schedule_add_form').attr('action', '/schedule/now');
+        $('#form_submit').click();
+    });
+});
