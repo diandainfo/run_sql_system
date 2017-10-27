@@ -19,11 +19,20 @@ const xls = require('node-xlsx')
 
 const _ = {
     // 创建定时任务：将定时任务注册到运行时
-    create: (connection, job)=>new Promise((resolve, reject)=> {
+    create: job=>new Promise((resolve, reject)=> {
         const schedule = require('node-schedule')
             , __job = schedule.scheduleJob(job.rsj_cron, ()=> {
-            // dao.query(connection,job.rsj_sql)
+            const connection = createConnection(job.rsj_database);
+            _.connecting(connection) // 创建定时任务需要的数据库连接
+                .then(()=>_.run(connection, job)) // 执行sql
+                .then(data=>data ? _.excel(data, job.rsj_file_name) : data) // 将结果写入excel内
+                .then(result=> result ? _.email(job) : resolve(false)) // 发送邮件
+                .catch(err=> {
+                    __job.cancel(); // 取消定时任务
+                });
         });
+        ScheduleJobList[job.rsj_md5] = {job: __job}; // 将定时任务放入全局定时任务队列
+        resolve(true);
     })
 
     // 处理结果集
@@ -77,12 +86,12 @@ const _ = {
 module.exports = {
     // 新增定时任务：将定时任务写入db，并创建定时任务
     add: job=>new Promise((resolve, reject)=> {
-        const sj = new ScheduleJob();
+        const sj = new ScheduleJob()
+            , connection = createConnection();
         sj.addSJ(job);
-        const connection = createConnection(sj.rsj_database);
-        dao.connection(connection)
+        dao.connection(connection) // 创建数据库连接
             .then(()=>dao.insert(connection, sj)) // 定时任务写入db内
-            .then(()=>_.create(connection, sj))
+            .then(()=>_.create(connection, sj)) // 创建定时任务
             .then(()=>resolve(true))
             .catch(err=>reject(err));
     })
@@ -97,6 +106,7 @@ module.exports = {
 
     // 查看定时任务
     , list: job=>new Promise((resolve, reject)=> {
+        resolve(ScheduleJobList);
     })
 
     // 即时运行定时任务
@@ -104,11 +114,11 @@ module.exports = {
         const sj = new ScheduleJob();
         sj.addSJ(job);
         const connection = createConnection(sj.rsj_database);
-        dao.connection(connection)
-            .then(()=>_.run(connection, sj))
-            .then(data=>data ? _.excel(data, sj.rsj_file_name) : data)
-            .then(result=> result ? _.email(sj) : resolve(false))
-            .then(()=>resolve('/download/' + sj.rsj_file_name + '.csv'))
+        dao.connection(connection) // 创建数据库连接
+            .then(()=>_.run(connection, sj)) // 执行SQL
+            .then(data=>data ? _.excel(data, sj.rsj_file_name) : data) // 将结果写入excel内
+            .then(result=> result ? _.email(sj) : resolve(false)) // 发送邮件
+            .then(()=>resolve('/download/' + sj.rsj_file_name + '.csv')) // 返回结果excel地址
             .catch(err=>reject(err));
     })
 

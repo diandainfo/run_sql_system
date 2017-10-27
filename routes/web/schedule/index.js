@@ -13,12 +13,20 @@ const express = require('express')
 // 任务 - home
 router.get('/', (req, res)=>res.redirect('/job/list'));
 
-// 任务 - 定时任务列表
+// 任务 - 定时任务列表 - 页面
 router.get('/list', (req, res)=>
     res.render('./schedule/list/view.ejs', {
         title: '定时任务列表'
     })
 );
+
+// 任务 - 定时任务列表 - 接口
+router.post('/list', (req, res)=> {
+    const body=req.body;
+    scheduleJobService.list()
+        .then(({data, count})=>res.json(GLO.success(data, count)))
+        .catch(err=>res.json(GLO.success([], 0)));
+});
 
 // 任务 - 新增定时任务 - 页面
 router.get('/add', (req, res)=>
